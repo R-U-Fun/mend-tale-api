@@ -1,5 +1,6 @@
 {
   "scripts": {
-    "start": "python ./src/Py/MTServer2.py"
+    "start": "python ./src/Py/MTServer2.py",
+    "build": "echo 'No build step'"
   }
 }
