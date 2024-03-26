@@ -1,6 +1,6 @@
 {
   "scripts": {
     "start": "python ./src/Py/MTServer2.py",
-    "build": "pip install transformers==4.20.0"
+    "build": "pip install transformers"
   }
 }
