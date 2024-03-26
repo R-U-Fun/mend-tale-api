@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
@@ -36,15 +35,10 @@ def Tokenizer():
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     data = request.get_json()
     TokenizerText = data.get('TokenizerText', '')
-    print(TokenizerText)
     sequence = TokenizerText
-    print(sequence)
     res = tokenizer(sequence)
-    print(res)
     tokens = tokenizer.tokenize(sequence)
-    print(tokens)
     ids = tokenizer.convert_tokens_to_ids(tokens)
-    print(ids)
     join = ", ".join(tokens)
     print(join)
     return jsonify(join)
@@ -103,9 +97,6 @@ def GenerateStory():
 
     StorySegment = StoryResponse.content
     
-    print("\n")
-    print(StoryResponse)
-    print("\n")
     print("\n")
     print(StorySegment)
     print("\n")
