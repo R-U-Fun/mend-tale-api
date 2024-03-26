@@ -1,6 +1,6 @@
 {
   "scripts": {
     "start": "python ./src/Py/MTServer2.py",
-    "build": "\"pip install flask==3.0.0\" \"pip install flask-cors==3.0.10\" \"pip install transformers==4.20.0\" \"pip install accelerate==0.21.0\""
+    "build": "pip install flask==3.0.0"
   }
 }
