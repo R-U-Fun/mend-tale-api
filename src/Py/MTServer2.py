@@ -11,20 +11,9 @@ def OpenAIKey():
     Key2 = "60Nxft4JT3BlbkFJptKC"
     Key3 = "Dk1iLXTXOAT0gebM"
     FullKey=Key1+Key2+Key3
-    return(FullKey)
-
-APIKey=OpenAIKey()
-print(APIKey)
-
-def HFKey():
-    Key1 = "hf_clFYScNqYyk"
-    Key2 = "VmqMMjdomgTta"
-    Key3 = "FOIzQTGbvD"
-    FullKey=Key1+Key2+Key3
     return(FullKey) 
 
-HFAPIKey = HFKey()
-print(HFAPIKey)
+APIKey=OpenAIKey()
 
 app = Flask(__name__)
 CORS(app)
@@ -36,11 +25,8 @@ def Tokenizer():
     data = request.get_json()
     TokenizerText = data.get('TokenizerText', '')
     sequence = TokenizerText
-    res = tokenizer(sequence)
     tokens = tokenizer.tokenize(sequence)
-    ids = tokenizer.convert_tokens_to_ids(tokens)
     join = ", ".join(tokens)
-    print(join)
     return jsonify(join)
 
 Model = AutoModelForSequenceClassification.from_pretrained("Aaroophan/mend-tale-sentiment-analysis")
@@ -52,13 +38,12 @@ def SentimentAnalysis4():
     data = request.get_json()
     UserResponse = data.get('UserResponse', '')
     print(UserResponse)
-
     InputData = Tokenizer(UserResponse, truncation=True, padding=True, return_tensors="pt")
     Logits = Model(**InputData).logits
     PredictedClass = Logits.argmax().item()
     PredictedMood = Moods[(PredictedClass)-1]
 
-    print("\n\nPredictedLabel: ", PredictedMood, "\n\n")
+    print("\nPredictedLabel: ", PredictedMood, "\n")
     return jsonify(PredictedMood)
 
 
@@ -85,23 +70,18 @@ Runnable = StoryPrompt | LLM
 
 @app.route('/TextGeneration4', methods=['POST'])
 def GenerateStory():
-
     data = request.get_json()
-
     JoinedHistory = data.get('UserResponse', '')
-
     Mood = data.get('Mood', '')
     print(Mood)
-    
     StoryResponse = Runnable.invoke({"text": JoinedHistory, "Mood": Mood})
-
     StorySegment = StoryResponse.content
-    
-    print("\n")
     print(StorySegment)
-    print("\n")
-
     return jsonify(StorySegment)
+
+@app.route('/Test')
+def Test():
+    return('Test')
 
 if __name__ == '__main__':
     app.run(host='localhost')
